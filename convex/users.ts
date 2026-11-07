@@ -1,22 +1,28 @@
 import { ConvexError } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { mutation, MutationCtx, QueryCtx } from "./_generated/server";
+
+export const getCurrentUser = async (ctx: QueryCtx | MutationCtx) => {
+  const identity = await ctx.auth.getUserIdentity();
+
+  if (!identity) {
+    throw new ConvexError("Not authenticated.");
+  }
+
+  const user = await ctx.db
+    .query("users")
+    .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+    .unique();
+
+  return { identity, user };
+};
 
 export const storeUser = mutation({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
+    const { identity, user } = await getCurrentUser(ctx);
 
-    if (!identity) {
-      throw new ConvexError("Not authorized.");
-    }
-
-    const existingUser = await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
-      .unique();
-
-    if (existingUser !== null) {
-      return existingUser._id;
+    if (user) {
+      return user._id;
     }
 
     const username = identity.username as string;
@@ -37,19 +43,5 @@ export const storeUser = mutation({
       email,
       avatar: identity.profileUrl,
     });
-  },
-});
-
-export const getCurrentUser = query({
-  args: {},
-  handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-
-    if (!identity) return null;
-
-    return await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
-      .unique();
   },
 });
