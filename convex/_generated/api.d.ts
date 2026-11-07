@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as portfolios from "../portfolios.js";
 import type * as users from "../users.js";
 
 import type {
@@ -17,6 +18,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  portfolios: typeof portfolios;
   users: typeof users;
 }>;
 
