@@ -13,7 +13,7 @@ export const createPortfolio = mutation({
     const { user } = await getCurrentUser(ctx);
 
     if (!user) {
-      throw new ConvexError("User not found in database.");
+      throw new ConvexError({ message: "User not found in database." });
     }
 
     const cleanSlug = args.slug.trim().toLowerCase();
@@ -24,7 +24,9 @@ export const createPortfolio = mutation({
       .unique();
 
     if (existingSlug) {
-      throw new ConvexError("This URL slug is already taken. Try another one!");
+      throw new ConvexError({
+        message: "This URL slug is already taken. Try another one!",
+      });
     }
 
     return await ctx.db.insert("portfolios", {
@@ -46,7 +48,7 @@ export const getMyPortfolios = query({
     const { user } = await getCurrentUser(ctx);
 
     if (!user) {
-      throw new ConvexError("User not found in database.");
+      throw new ConvexError({ message: "User not found in database." });
     }
 
     return await ctx.db
@@ -62,7 +64,7 @@ export const getPortfolioById = query({
     const { user } = await getCurrentUser(ctx);
 
     if (!user) {
-      throw new ConvexError("User not found in database.");
+      throw new ConvexError({ message: "User not found in database." });
     }
 
     const portfolio = await ctx.db.get("portfolios", args.portfolioId);

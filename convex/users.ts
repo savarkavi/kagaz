@@ -5,7 +5,7 @@ export const getCurrentUser = async (ctx: QueryCtx | MutationCtx) => {
   const identity = await ctx.auth.getUserIdentity();
 
   if (!identity) {
-    throw new ConvexError("Not authenticated.");
+    throw new ConvexError({ message: "Not authenticated." });
   }
 
   const user = await ctx.db
@@ -29,9 +29,10 @@ export const storeUser = mutation({
     const email = identity.email;
 
     if (!username || !email) {
-      throw new ConvexError(
-        "Missing username or email in Clerk JWT token. Check Clerk Sessions/JWT claims.",
-      );
+      throw new ConvexError({
+        message:
+          "Missing username or email in Clerk JWT token. Check Clerk Sessions/JWT claims.",
+      });
     }
 
     const name = identity.name ?? username;
