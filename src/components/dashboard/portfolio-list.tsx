@@ -1,24 +1,10 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import PortfolioCard from "@/components/dashboard/portfolio-card";
 import { Card } from "@/components/ui/card";
-
-function CreatePortfolioCard() {
-  return (
-    <Card className="flex min-h-46 flex-col items-center justify-center border-dashed bg-transparent px-5 text-center shadow-none hover:border-black cursor-pointer">
-      <span className="mb-3 flex size-9 items-center justify-center rounded-full border bg-muted/30 text-muted-foreground">
-        <Plus aria-hidden="true" className="size-4" />
-      </span>
-      <p className="text-sm font-medium">Create Portfolio</p>
-      <p className="mt-0.5 text-xs text-muted-foreground">
-        Pick a template &amp; claim a slug
-      </p>
-    </Card>
-  );
-}
+import CreatePortfolioDialog from "@/components/dashboard/create-portfolio-dialog";
 
 function PortfolioCardSkeleton() {
   return (
@@ -55,7 +41,7 @@ export default function PortfolioList() {
           <PortfolioCard key={portfolio._id} portfolio={portfolio} />
         ))
       )}
-      <CreatePortfolioCard />
+      <CreatePortfolioDialog triggerVariant="card" />
     </section>
   );
 }

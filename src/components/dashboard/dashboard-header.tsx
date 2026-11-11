@@ -1,5 +1,4 @@
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import CreatePortfolioDialog from "@/components/dashboard/create-portfolio-dialog";
 
 export default function DashboardHeader() {
   return (
@@ -10,13 +9,7 @@ export default function DashboardHeader() {
           Select a portfolio to edit or launch a new single-page site.
         </p>
       </div>
-      <Button
-        type="button"
-        className="h-9 gap-2 rounded-lg px-4 text-sm font-semibold"
-      >
-        <Plus aria-hidden="true" className="size-4" />
-        New Portfolio
-      </Button>
+      <CreatePortfolioDialog triggerVariant="header" />
     </div>
   );
 }
