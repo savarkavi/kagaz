@@ -1,12 +1,14 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getCurrentUser } from "./users";
+import { createPortfolioSchema } from "../src/lib/form-validations";
 
 export const createPortfolio = mutation({
   args: {
     title: v.string(),
     slug: v.string(),
     templateId: v.string(),
+    artistName: v.optional(v.string()),
   },
 
   handler: async (ctx, args) => {
@@ -16,11 +18,19 @@ export const createPortfolio = mutation({
       throw new ConvexError({ message: "User not found in database." });
     }
 
-    const cleanSlug = args.slug.trim().toLowerCase();
+    const parsed = createPortfolioSchema.safeParse(args);
+
+    if (!parsed.success) {
+      throw new ConvexError({
+        message: parsed.error.issues[0]?.message ?? "Invalid input.",
+      });
+    }
+
+    const { title, slug, templateId } = parsed.data;
 
     const existingSlug = await ctx.db
       .query("portfolios")
-      .withIndex("by_slug", (q) => q.eq("slug", cleanSlug))
+      .withIndex("by_slug", (q) => q.eq("slug", slug))
       .unique();
 
     if (existingSlug) {
@@ -31,9 +41,9 @@ export const createPortfolio = mutation({
 
     return await ctx.db.insert("portfolios", {
       userId: user._id,
-      templateId: args.templateId,
-      title: args.title,
-      slug: cleanSlug,
+      templateId: templateId,
+      title: title,
+      slug: slug,
       isPublished: false,
       artistName: user.name,
       useArtworkCategories: false,
