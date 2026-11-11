@@ -13,7 +13,7 @@ export default function PortfolioCard({
       href={`/editor/${portfolio._id}`}
       className="group block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      <Card className="flex h-full min-h-[184px] flex-col p-5 transition-colors group-hover:border-foreground/20">
+      <Card className="flex h-full min-h-46 flex-col p-5 transition-colors group-hover:border-foreground/20">
         <div className="flex items-center justify-between gap-3">
           <span className="max-w-[65%] truncate rounded border bg-muted/40 px-2 py-1 font-mono text-[11px] leading-4 text-muted-foreground">
             {portfolio.templateId}
