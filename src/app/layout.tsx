@@ -1,22 +1,25 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import ConvexClientProvider from "./ConvexClientProvider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toast";
 import Header from "@/components/layout/header";
+import { Inter, Noto_Sans_Georgian, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const roboto = Roboto({ subsets: ["latin"], variable: "--font-sans" });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const fontSans = Inter({
   subsets: ["latin"],
+  variable: "--font-sans",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fontSerif = Noto_Sans_Georgian({
   subsets: ["latin"],
+  variable: "--font-serif",
+});
+
+const fontMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -35,10 +38,9 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        geistSans.variable,
-        geistMono.variable,
-        "font-sans",
-        roboto.variable,
+        fontSans.variable,
+        fontSerif.variable,
+        fontMono.variable,
       )}
     >
       <body className="min-h-full flex flex-col">

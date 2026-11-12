@@ -90,7 +90,7 @@ export default function CreatePortfolioDialog({
     ) : (
       <button
         type="button"
-        className="flex min-h-46 w-full flex-col items-center justify-center rounded-xl border border-muted-foreground/50 border-dashed bg-transparent px-5 text-center transition-colors hover:border-foreground/40"
+        className="flex min-h-46 w-full flex-col items-center justify-center rounded-xl border border-muted-foreground/50 border-dashed bg-transparent px-5 text-center transition-colors hover:border-primary"
       >
         <span className="mb-3 flex size-9 items-center justify-center rounded-full border bg-muted/30 text-muted-foreground">
           <Plus aria-hidden="true" className="size-4" />
